@@ -1,0 +1,30 @@
+import os
+import openpyxl
+from datetime import datetime
+
+# Définissez le chemin du dossier principal
+root_path = "C:/Users/mhammed/Documents"
+
+# Créez un nouveau fichier Excel pour stocker les données exportées
+export_workbook = openpyxl.Workbook()
+export_sheet = export_workbook.active
+
+# Parcourez tous les dossiers et fichiers dans le dossier principal
+for subdir, dirs, files in os.walk(root_path):
+    for file in files:
+        # Vérifiez si le fichier est un fichier Excel
+        if file.endswith(".xlsx"):
+            file_path = os.path.join(subdir, file)
+            # Chargez le fichier Excel en utilisant openpyxl
+            workbook = openpyxl.load_workbook(file_path)
+            sheet = workbook.active
+            # Parcourez toutes les lignes dans la feuille active
+            for row in sheet.iter_rows():
+                # Vérifiez si la cellule de la colonne A contient la date 01/01/2013
+                if isinstance(row[0].value, datetime):
+                    if row[0].value.date() == datetime(2013, 1, 1).date() and row[0].value.time() == datetime(2013, 1, 1, 0, 0).time():
+                        # Copiez la ligne qui contient la date 01/01/2013
+                        export_sheet.append([cell.value for cell in row])
+
+# Enregistrez le fichier Excel exporté
+export_workbook.save("exported_data.xlsx")
