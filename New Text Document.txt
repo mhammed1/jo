@@ -2,6 +2,8 @@ import os
 import openpyxl
 from datetime import datetime
 import pandas as pd
+
+
 # Définissez le chemin du dossier principal
 root_path = "C:/Users/mhammed/Documents"
 
